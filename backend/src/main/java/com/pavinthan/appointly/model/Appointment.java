@@ -1,6 +1,6 @@
 package com.pavinthan.appointly.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pavinthan.appointly.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,38 +8,34 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "doctors")
+@Table(name = "appointments")
 @EntityListeners(AuditingEntityListener.class)
-public class Doctor {
+public class Appointment {
     @Id
     @UuidGenerator
     @Column(name = "id")
-    UUID id;
+    private UUID id;
 
-    @Column(name = "specialization")
-    private String specialization;
+    @Column(name = "date")
+    private Date date;
 
-    @Column(name = "qualification")
-    private String qualification;
+    @Column(name = "time")
+    private String time;
 
-    @Column(name = "experience")
-    private int experience;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private AppointmentStatus status;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Availability> availabilities;
-
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Appointment> appointments;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -67,28 +63,28 @@ public class Doctor {
         this.id = id;
     }
 
-    public String getSpecialization() {
-        return specialization;
+    public Date getDate() {
+        return date;
     }
 
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public String getQualification() {
-        return qualification;
+    public String getTime() {
+        return time;
     }
 
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public int getExperience() {
-        return experience;
+    public AppointmentStatus getStatus() {
+        return status;
     }
 
-    public void setExperience(int experience) {
-        this.experience = experience;
+    public void setStatus(AppointmentStatus status) {
+        this.status = status;
     }
 
     public User getUser() {
@@ -99,20 +95,12 @@ public class Doctor {
         this.user = user;
     }
 
-    public List<Availability> getAvailabilities() {
-        return availabilities;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setAvailabilities(List<Availability> availabilities) {
-        this.availabilities = availabilities;
-    }
-
-    public List<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Date getCreatedAt() {

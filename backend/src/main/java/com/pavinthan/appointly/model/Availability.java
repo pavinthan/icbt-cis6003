@@ -1,45 +1,43 @@
 package com.pavinthan.appointly.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "doctors")
+@Table(name = "availabilities")
 @EntityListeners(AuditingEntityListener.class)
-public class Doctor {
+public class Availability {
     @Id
     @UuidGenerator
     @Column(name = "id")
-    UUID id;
+    private UUID id;
 
-    @Column(name = "specialization")
-    private String specialization;
+    @Column(name = "date", nullable = true)
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
-    @Column(name = "qualification")
-    private String qualification;
+    @Column(name = "day_of_week", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private DayOfWeek dayOfWeek;
 
-    @Column(name = "experience")
-    private int experience;
+    @Column(name = "start_time")
+    private LocalTime startTime;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "end_time")
+    private LocalTime endTime;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Availability> availabilities;
-
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Appointment> appointments;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -67,52 +65,44 @@ public class Doctor {
         this.id = id;
     }
 
-    public String getSpecialization() {
-        return specialization;
+    public Date getDate() {
+        return date;
     }
 
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public String getQualification() {
-        return qualification;
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
-    public int getExperience() {
-        return experience;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setExperience(int experience) {
-        this.experience = experience;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
-    public User getUser() {
-        return user;
+    public LocalTime getEndTime() {
+        return endTime;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
-    public List<Availability> getAvailabilities() {
-        return availabilities;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setAvailabilities(List<Availability> availabilities) {
-        this.availabilities = availabilities;
-    }
-
-    public List<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Date getCreatedAt() {
@@ -145,5 +135,13 @@ public class Doctor {
 
     public void setUpdatedBy(User updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    @PrePersist
+    @PreUpdate
+    public void validate() {
+        if (date == null && dayOfWeek == null) {
+            throw new IllegalArgumentException("Either date or dayOfWeek must be provided");
+        }
     }
 }

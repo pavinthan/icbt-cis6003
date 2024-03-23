@@ -1,8 +1,7 @@
 package com.pavinthan.appointly.service;
 
 import com.pavinthan.appointly.dto.*;
-import com.pavinthan.appointly.exception.UserExistsException;
-import com.pavinthan.appointly.exception.UserNotFoundException;
+import com.pavinthan.appointly.exception.AppException;
 import com.pavinthan.appointly.model.User;
 import com.pavinthan.appointly.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -29,7 +29,7 @@ public class UserService {
         return UserDto.from(users);
     }
 
-    public UserDto getUserById(String id) {
+    public UserDto getUserById(UUID id) {
         User user = userRepository.findById(id).orElse(null);
         return UserDto.from(user);
     }
@@ -43,14 +43,14 @@ public class UserService {
             }
         }
 
-        throw new UserNotFoundException("User not found", HttpStatus.NOT_FOUND);
+        throw new AppException("User not found", HttpStatus.NOT_FOUND);
     }
 
     public UserDto register(RegisterUserRequestDto registerDto) {
         User existingUser = userRepository.findByEmail(registerDto.getEmail()).orElse(null);
 
         if(existingUser != null) {
-            throw new UserExistsException("User already exists", HttpStatus.CONFLICT);
+            throw new AppException("User already exists", HttpStatus.CONFLICT);
         }
 
         String password = passwordEncoder.encode(CharBuffer.wrap(registerDto.getPassword()));

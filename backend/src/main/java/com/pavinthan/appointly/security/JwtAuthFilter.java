@@ -1,11 +1,12 @@
 package com.pavinthan.appointly.security;
 
-import com.pavinthan.appointly.security.UserAuthProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,29 +21,37 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse,
-            FilterChain filterChain) throws ServletException, IOException {
-        String header = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if(header != null) {
             String[] elements = header.split(" ");
 
-            if(elements.length != 2 || !"Bearer".equals(elements[0])) {
-                return;
-            }
+            if(elements.length == 2 && "Bearer".equals(elements[0])) {
+                String token = elements[1];
 
-            String token = elements[1];
+                try {
+                    String method = request.getMethod();
+                    String allowedMethod = HttpMethod.GET.toString();
 
-            try {
-                SecurityContextHolder.getContext().setAuthentication(
-                        userAuthProvider.validateToken(token)
-                );
-            } catch (Exception e) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    if (allowedMethod.equals(method)) {
+                        SecurityContextHolder.getContext().setAuthentication(
+                                userAuthProvider.validateToken(token)
+                        );
+                    } else {
+                        SecurityContextHolder.getContext().setAuthentication(
+                                userAuthProvider.validateTokenStrongly(token)
+                        );
+                    }
+                } catch (Exception e) {
+                    SecurityContextHolder.clearContext();
+                    throw e;
+                }
             }
         }
 
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
+        filterChain.doFilter(request, response);
     }
 }

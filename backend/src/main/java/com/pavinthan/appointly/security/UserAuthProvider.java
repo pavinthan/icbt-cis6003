@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.pavinthan.appointly.dto.UserDto;
-import com.pavinthan.appointly.exception.UserNotFoundException;
+import com.pavinthan.appointly.exception.AppException;
 import com.pavinthan.appointly.service.UserService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +37,18 @@ public class UserAuthProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(UUID userId) {
+    public String createToken(UserDto user) {
         Date now = new java.util.Date();
         Date validity = new Date(now.getTime() + 3_600_000);
 
         return JWT.create()
-                .withIssuer(userId.toString())
+                .withSubject(user.getId().toString())
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
+                .withClaim("firstName", user.getFirstName())
+                .withClaim("lastName", user.getLastName())
+                .withClaim("email", user.getEmail())
+                .withClaim("phoneNumber", user.getPhoneNumber())
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
@@ -54,12 +58,30 @@ public class UserAuthProvider {
 
         DecodedJWT decodedToken = verify.verify(token);
 
-        String userId = decodedToken.getIssuer();
+        UUID userId = UUID.fromString(decodedToken.getSubject());
+
+        UserDto user = new UserDto();
+        user.setId(userId);
+        user.setFirstName(decodedToken.getClaim("firstName").asString());
+        user.setLastName(decodedToken.getClaim("lastName").asString());
+        user.setEmail(decodedToken.getClaim("email").asString());
+        user.setPhoneNumber(decodedToken.getClaim("phoneNumber").asString());
+
+        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+    }
+
+    public Authentication validateTokenStrongly(String token) {
+        JWTVerifier verify = JWT.require(Algorithm.HMAC256(secretKey))
+                .build();
+
+        DecodedJWT decodedToken = verify.verify(token);
+
+        UUID userId = UUID.fromString(decodedToken.getSubject());
 
         UserDto user = userService.getUserById(userId);
 
         if (user == null) {
-            throw new UserNotFoundException("User not found", HttpStatus.NOT_FOUND);
+            throw new AppException("User not found", HttpStatus.NOT_FOUND);
         }
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());

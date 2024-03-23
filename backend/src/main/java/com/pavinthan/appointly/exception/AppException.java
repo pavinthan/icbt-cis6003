@@ -2,12 +2,12 @@ package com.pavinthan.appointly.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class UserExistsException extends RuntimeException {
+public class AppException extends RuntimeException {
     private final String message;
 
     private final HttpStatus code;
 
-    public UserExistsException(String message, HttpStatus code) {
+    public AppException(String message, HttpStatus code) {
         this.message = message;
         this.code = code;
     }

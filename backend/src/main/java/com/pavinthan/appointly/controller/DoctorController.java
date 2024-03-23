@@ -1,15 +1,15 @@
 package com.pavinthan.appointly.controller;
 
-import com.pavinthan.appointly.service.DoctorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DoctorController {
-    private final DoctorService doctorService;
 
-    @Autowired
-    public DoctorController(DoctorService doctorService) {
-        this.doctorService = doctorService;
+    @GetMapping("/doctors")
+    public ResponseEntity<String> getDoctor() {
+        return ResponseEntity.ok("Doctor list");
     }
 }

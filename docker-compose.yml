@@ -5,7 +5,7 @@ services:
     depends_on:
       - database
     environment:
-      POSTGRES_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
+      POSTGRES_HOST: database
     networks:
       - backend
     ports:
@@ -24,8 +24,11 @@ services:
       - ./frontend:/app
   database:
     image: postgres
-    env_file:
-      - .env
+    shm_size: 128mb
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:

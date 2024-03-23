@@ -2,6 +2,7 @@ package com.pavinthan.appointly.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(name = "users")
@@ -24,7 +25,7 @@ public class User {
     @Column(name = "email")
     String email;
 
-    @JsonProperty("CreatedAt")
-    @Column(name = "createdAt", columnDefinition = CreatedDate)
-    String createdAt;
+//    @JsonProperty("CreatedAt")
+//    @Column(name = "createdAt", columnDefinition = CreatedDate)
+//    String createdAt;
 }

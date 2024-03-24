@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class DoctorService {
@@ -21,7 +22,7 @@ public class DoctorService {
         return doctorRepository.findAll();
     }
 
-    public Doctor getDoctorById(String id) {
+    public Doctor getDoctorById(UUID id) {
         return doctorRepository.findById(id).orElse(null);
     }
 
@@ -29,7 +30,7 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
-    public void deleteDoctor(String id) {
+    public void deleteDoctor(UUID id) {
         doctorRepository.deleteById(id);
     }
 }

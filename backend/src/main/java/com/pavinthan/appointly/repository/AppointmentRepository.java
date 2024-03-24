@@ -1,7 +1,9 @@
 package com.pavinthan.appointly.repository;
 
-import com.pavinthan.appointly.model.User;
+import com.pavinthan.appointly.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AppointmentRepository extends JpaRepository<User, String> {
+import java.util.UUID;
+
+public interface AppointmentRepository extends JpaRepository<Appointment, UUID> {
 }

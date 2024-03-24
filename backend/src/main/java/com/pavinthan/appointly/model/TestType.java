@@ -10,20 +10,22 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "technicians")
+@Table(name = "test_types")
 @EntityListeners(AuditingEntityListener.class)
-public class Technician {
+public class TestType {
     @Id
     @UuidGenerator
     @Column(name = "id")
-    UUID id;
+    private UUID id;
 
-    @Column(name = "specialization")
-    private String specialization;
+    @Column(name = "name")
+    private String name;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
+    @Column(name = "duration_in_seconds", columnDefinition = "INT DEFAULT 3600")
+    private int durationInSeconds;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -35,6 +37,14 @@ public class Technician {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+    public TestType() {
+    }
+
+    public TestType(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -43,20 +53,28 @@ public class Technician {
         this.id = id;
     }
 
-    public String getSpecialization() {
-        return specialization;
+    public String getName() {
+        return name;
     }
 
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public User getUser() {
-        return user;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getDurationInSeconds() {
+        return durationInSeconds;
+    }
+
+    public void setDurationInSeconds(int durationInSeconds) {
+        this.durationInSeconds = durationInSeconds;
     }
 
     public Date getCreatedAt() {
@@ -74,4 +92,5 @@ public class Technician {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

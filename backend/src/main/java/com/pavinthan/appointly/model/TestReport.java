@@ -7,26 +7,35 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "doctors")
+@Table(name = "test_reports")
 @EntityListeners(AuditingEntityListener.class)
-public class Doctor {
+public class TestReport {
     @Id
     @UuidGenerator
     @Column(name = "id")
     UUID id;
 
-    @Column(name = "specialization")
-    private String specialization;
-
-    @Column(name = "experience")
-    private int experience;
+    @Column(name = "note", columnDefinition = "TEXT")
+    private String note;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+
+    @Column(name = "approvedat")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date approvedAt;
+
+    @OneToMany(mappedBy = "testReport", cascade = CascadeType.ALL)
+    private List<Test> tests;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -46,28 +55,44 @@ public class Doctor {
         this.id = id;
     }
 
-    public String getSpecialization() {
-        return specialization;
+    public String getNote() {
+        return note;
     }
 
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
+    public void setNote(String note) {
+        this.note = note;
     }
 
-    public int getExperience() {
-        return experience;
+    public Appointment getAppointment() {
+        return appointment;
     }
 
-    public void setExperience(int experience) {
-        this.experience = experience;
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
     }
 
-    public User getUser() {
-        return user;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public Date getApprovedAt() {
+        return approvedAt;
+    }
+
+    public void setApprovedAt(Date approvedAt) {
+        this.approvedAt = approvedAt;
+    }
+
+    public List<Test> getTests() {
+        return tests;
+    }
+
+    public void setTests(List<Test> tests) {
+        this.tests = tests;
     }
 
     public Date getCreatedAt() {
@@ -85,5 +110,4 @@ public class Doctor {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 }

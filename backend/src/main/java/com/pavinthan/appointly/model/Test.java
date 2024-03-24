@@ -1,6 +1,5 @@
 package com.pavinthan.appointly.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,26 +7,31 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "services")
+@Table(name = "tests")
 @EntityListeners(AuditingEntityListener.class)
-public class Service {
+public class Test {
     @Id
     @UuidGenerator
     @Column(name = "id")
-    private UUID id;
+    UUID id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "result", columnDefinition = "TEXT")
+    private String result;
 
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_type_id")
+    private TestType testType;
 
-    @Column(name = "duration_in_seconds", columnDefinition = "INT DEFAULT 3600")
-    private int durationInSeconds;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "technician_id")
+    private Technician technician;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_report_id")
+    private TestReport testReport;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -39,14 +43,6 @@ public class Service {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    public Service() {
-    }
-
-    public Service(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
     public UUID getId() {
         return id;
     }
@@ -55,28 +51,36 @@ public class Service {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getResult() {
+        return result;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public String getDescription() {
-        return description;
+    public TestType getTestType() {
+        return testType;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTestType(TestType testType) {
+        this.testType = testType;
     }
 
-    public int getDurationInSeconds() {
-        return durationInSeconds;
+    public Technician getTechnician() {
+        return technician;
     }
 
-    public void setDurationInSeconds(int durationInSeconds) {
-        this.durationInSeconds = durationInSeconds;
+    public void setTechnician(Technician technician) {
+        this.technician = technician;
+    }
+
+    public TestReport getTestReport() {
+        return testReport;
+    }
+
+    public void setTestReport(TestReport testReport) {
+        this.testReport = testReport;
     }
 
     public Date getCreatedAt() {
@@ -94,5 +98,4 @@ public class Service {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 }

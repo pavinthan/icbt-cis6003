@@ -1,6 +1,5 @@
 package com.pavinthan.appointly.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,7 +7,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,9 +18,6 @@ public class Doctor {
     @Column(name = "id")
     UUID id;
 
-    @Column(name = "specialization")
-    private String specialization;
-
     @Column(name = "qualification")
     private String qualification;
 
@@ -32,14 +27,6 @@ public class Doctor {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Availability> availabilities;
-
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Appointment> appointments;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -67,14 +54,6 @@ public class Doctor {
         this.id = id;
     }
 
-    public String getSpecialization() {
-        return specialization;
-    }
-
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
-    }
-
     public String getQualification() {
         return qualification;
     }
@@ -97,22 +76,6 @@ public class Doctor {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public List<Availability> getAvailabilities() {
-        return availabilities;
-    }
-
-    public void setAvailabilities(List<Availability> availabilities) {
-        this.availabilities = availabilities;
-    }
-
-    public List<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
     }
 
     public Date getCreatedAt() {

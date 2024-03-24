@@ -1,43 +1,26 @@
 package com.pavinthan.appointly.model;
 
-
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "availabilities")
+@Table(name = "technicians")
 @EntityListeners(AuditingEntityListener.class)
-public class Availability {
+public class Technician {
     @Id
     @UuidGenerator
     @Column(name = "id")
-    private UUID id;
+    UUID id;
 
-    @Column(name = "date", nullable = true)
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
-    @Column(name = "day_of_week", nullable = true)
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
-
-    @Column(name = "start_time")
-    private LocalTime startTime;
-
-    @Column(name = "end_time")
-    private LocalTime endTime;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -65,44 +48,12 @@ public class Availability {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public User getUser() {
+        return user;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public DayOfWeek getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public void setDayOfWeek(DayOfWeek dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreatedAt() {
@@ -135,13 +86,5 @@ public class Availability {
 
     public void setUpdatedBy(User updatedBy) {
         this.updatedBy = updatedBy;
-    }
-
-    @PrePersist
-    @PreUpdate
-    public void validate() {
-        if (date == null && dayOfWeek == null) {
-            throw new IllegalArgumentException("Either date or dayOfWeek must be provided");
-        }
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -39,9 +38,8 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Doctor doctor;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Appointment> appointments;
+    @OneToOne(mappedBy = "user")
+    private Technician technician;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -136,12 +134,12 @@ public class User {
         this.doctor = doctor;
     }
 
-    public List<Appointment> getAppointments() {
-        return appointments;
+    public Technician getTechnician() {
+        return technician;
     }
 
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
+    public void setTechnician(Technician technician) {
+        this.technician = technician;
     }
 
 }

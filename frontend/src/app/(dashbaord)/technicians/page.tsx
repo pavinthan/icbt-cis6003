@@ -4,81 +4,71 @@ const technicians = [
 	{
 		id: 1,
 		createdAt: new Date("2024-04-05T10:00:00"),
-		firstName: "Doctor",
+		firstName: "Technician",
 		lastName: "A",
-		specialization: "Neurology",
 		experience: "10 years",
 	},
 	{
 		id: 2,
 		createdAt: new Date("2024-04-06T10:00:00"),
-		firstName: "Doctor",
+		firstName: "Technician",
 		lastName: "B",
-		specialization: "Cardiology",
 		experience: "8 years",
 	},
 	{
 		id: 3,
 		createdAt: new Date("2024-04-07T10:00:00"),
-		firstName: "Doctor",
+		firstName: "Technician",
 		lastName: "C",
-		specialization: "Orthopedics",
 		experience: "15 years",
 	},
 	{
 		id: 4,
 		createdAt: new Date("2024-04-08T10:00:00"),
-		firstName: "Doctor",
+		firstName: "Technician",
 		lastName: "D",
-		specialization: "Dermatology",
 		experience: "5 years",
 	},
 	{
 		id: 5,
 		createdAt: new Date("2024-04-09T10:00:00"),
-		firstName: "Doctor",
+		firstName: "Technician",
 		lastName: "E",
-		specialization: "Gastroenterology",
 		experience: "12 years",
 	},
 	{
 		id: 6,
 		createdAt: new Date("2024-04-10T10:00:00"),
-		firstName: "Doctor",
+		firstName: "Technician",
 		lastName: "F",
-		specialization: "Endocrinology",
 		experience: "7 years",
 	},
 	{
 		id: 7,
 		createdAt: new Date("2024-04-11T10:00:00"),
-		firstName: "Doctor",
+		firstName: "Technician",
 		lastName: "G",
-		specialization: "Ophthalmology",
 		experience: "9 years",
 	},
 	{
 		id: 8,
 		createdAt: new Date("2024-04-12T10:00:00"),
-		firstName: "Doctor",
+		firstName: "Technician",
 		lastName: "H",
-		specialization: "Pediatrics",
 		experience: "14 years",
 	},
 	{
 		id: 9,
 		createdAt: new Date("2024-04-13T10:00:00"),
-		firstName: "Doctor",
+		firstName: "Technician",
 		lastName: "I",
-		specialization: "Psychiatry",
 		experience: "11 years",
 	},
 	{
 		id: 10,
 		createdAt: new Date("2024-04-14T10:00:00"),
-		firstName: "Doctor",
+		firstName: "Technician",
 		lastName: "J",
-		specialization: "Radiology",
 		experience: "6 years",
 	},
 ];
@@ -124,12 +114,6 @@ export default function Technicians(): JSX.Element {
 								</th>
 								<th
 									scope="col"
-									className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-								>
-									Specialization
-								</th>
-								<th
-									scope="col"
 									className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
 								>
 									Experience
@@ -168,14 +152,6 @@ export default function Technicians(): JSX.Element {
 										)}
 									>
 										{technician.firstName} {technician.lastName}
-									</td>
-									<td
-										className={cn(
-											technicianIdx === 0 ? "" : "border-t border-gray-200",
-											"hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell"
-										)}
-									>
-										{technician.specialization}
 									</td>
 									<td
 										className={cn(

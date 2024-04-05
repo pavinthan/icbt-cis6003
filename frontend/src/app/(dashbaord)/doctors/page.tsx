@@ -1,86 +1,108 @@
-import Link from "next/link";
-
 import { cn } from "@/lib/cn";
 
-const appointments = [
+const doctors = [
 	{
-		appointmentNumber: 20240405001,
-		appointmentAt: new Date("2024-04-05T10:00:00"),
-		doctor: "Doctor A",
-		patient: "Patient A",
-		reason: "Headache and Fever",
-		status: "Completed",
+		id: 1,
+		createdAt: new Date("2024-04-05T10:00:00"),
+		firstName: "Doctor",
+		lastName: "A",
+		specialization: "Neurology",
+		experience: "10 years",
 	},
 	{
-		appointmentNumber: 20240405002,
-		appointmentAt: new Date("2024-04-05T00:00:00"),
-		doctor: "Doctor B",
-		patient: "Patient B",
-		reason: "Cough and Cold",
-		status: "Pending",
+		id: 2,
+		createdAt: new Date("2024-04-06T10:00:00"),
+		firstName: "Doctor",
+		lastName: "B",
+		specialization: "Cardiology",
+		experience: "8 years",
 	},
 	{
-		appointmentNumber: 20240405003,
-		appointmentAt: new Date("2024-04-06T10:00:00"),
-		doctor: "Doctor A",
-		patient: "Patient A",
-		reason: "Regular Checkup",
-		status: "Scheduled",
+		id: 3,
+		createdAt: new Date("2024-04-07T10:00:00"),
+		firstName: "Doctor",
+		lastName: "C",
+		specialization: "Orthopedics",
+		experience: "15 years",
 	},
 	{
-		appointmentNumber: 20240405004,
-		appointmentAt: new Date("2024-04-07T12:00:00"),
-		doctor: "Doctor B",
-		patient: "Patient B",
-		reason: "Flu Symptoms",
-		status: "Completed",
+		id: 4,
+		createdAt: new Date("2024-04-08T10:00:00"),
+		firstName: "Doctor",
+		lastName: "D",
+		specialization: "Dermatology",
+		experience: "5 years",
 	},
 	{
-		appointmentNumber: 20240405005,
-		appointmentAt: new Date("2024-04-08T14:00:00"),
-		doctor: "Doctor C",
-		patient: "Patient C",
-		reason: "Dental Cleaning",
-		status: "Scheduled",
+		id: 5,
+		createdAt: new Date("2024-04-09T10:00:00"),
+		firstName: "Doctor",
+		lastName: "E",
+		specialization: "Gastroenterology",
+		experience: "12 years",
 	},
 	{
-		appointmentNumber: 20240405006,
-		appointmentAt: new Date("2024-04-09T16:00:00"),
-		doctor: "Doctor D",
-		patient: "Patient D",
-		reason: "Eye Checkup",
-		status: "Pending",
+		id: 6,
+		createdAt: new Date("2024-04-10T10:00:00"),
+		firstName: "Doctor",
+		lastName: "F",
+		specialization: "Endocrinology",
+		experience: "7 years",
 	},
 	{
-		appointmentNumber: 20240405007,
-		appointmentAt: new Date("2024-04-10T18:00:00"),
-		doctor: "Doctor E",
-		patient: "Patient E",
-		reason: "Skin Rash",
-		status: "Completed",
+		id: 7,
+		createdAt: new Date("2024-04-11T10:00:00"),
+		firstName: "Doctor",
+		lastName: "G",
+		specialization: "Ophthalmology",
+		experience: "9 years",
+	},
+	{
+		id: 8,
+		createdAt: new Date("2024-04-12T10:00:00"),
+		firstName: "Doctor",
+		lastName: "H",
+		specialization: "Pediatrics",
+		experience: "14 years",
+	},
+	{
+		id: 9,
+		createdAt: new Date("2024-04-13T10:00:00"),
+		firstName: "Doctor",
+		lastName: "I",
+		specialization: "Psychiatry",
+		experience: "11 years",
+	},
+	{
+		id: 10,
+		createdAt: new Date("2024-04-14T10:00:00"),
+		firstName: "Doctor",
+		lastName: "J",
+		specialization: "Radiology",
+		experience: "6 years",
 	},
 ];
 
-export default function Appointments(): JSX.Element {
+export default function Doctors(): JSX.Element {
 	return (
 		<main>
 			<div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
 				<div className="sm:flex sm:items-center">
 					<div className="sm:flex-auto">
 						<h1 className="text-base font-semibold leading-6 text-gray-900">
-							Appointments
+							Doctors
 						</h1>
 						<p className="mt-2 text-sm text-gray-700">
-							You have booked the following appointments.
+							List all the doctors in the hospital and manage their information.
 						</p>
 					</div>
 					<div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-						<Link
-							href="/appointments/create"
+						<button
+							type="button"
 							className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 						>
-							Create an Appointment
-						</Link>
+							Add a Doctor
+						</button>
 					</div>
 				</div>
 				<div className="-mx-4 mt-10 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
@@ -89,33 +111,33 @@ export default function Appointments(): JSX.Element {
 							<tr>
 								<th
 									scope="col"
-									className="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+									className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
 								>
-									Appointment Number
+									ID
 								</th>
 								<th
 									scope="col"
 									className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
 								>
-									Appointment Time
+									Name
 								</th>
 								<th
 									scope="col"
-									className="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+									className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
 								>
-									Doctor
+									Specialization
 								</th>
 								<th
 									scope="col"
 									className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
 								>
-									Reason
+									Experience
 								</th>
 								<th
 									scope="col"
 									className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
 								>
-									Status
+									Created At
 								</th>
 								<th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
 									<span className="sr-only">Select</span>
@@ -123,70 +145,63 @@ export default function Appointments(): JSX.Element {
 							</tr>
 						</thead>
 						<tbody>
-							{appointments.map((appointment, planIdx) => (
-								<tr key={appointment.appointmentNumber}>
+							{doctors.map((doctor, doctorIdx) => (
+								<tr key={doctor.id}>
 									<td
 										className={cn(
-											planIdx === 0 ? "" : "border-t border-transparent",
+											doctorIdx === 0 ? "" : "border-t border-transparent",
 											"relative py-4 pl-4 pr-3 text-sm sm:pl-6"
 										)}
 									>
-										<div className="font-medium text-gray-900">
-											{appointment.appointmentNumber}
-										</div>
-										{planIdx !== 0 ? (
+										<div className="font-medium text-gray-900">{doctor.id}</div>
+										{doctorIdx !== 0 ? (
 											<div className="absolute -top-px left-6 right-0 h-px bg-gray-200" />
 										) : null}
 									</td>
 									<td
 										className={cn(
-											planIdx === 0 ? "" : "border-t border-gray-200",
+											doctorIdx === 0 ? "" : "border-t border-gray-200",
 											"hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell"
 										)}
 									>
-										{appointment.appointmentAt.toLocaleString("en-US", {
-											month: "short",
-											day: "numeric",
-											year: "numeric",
-											hour: "numeric",
-											minute: "2-digit",
-											hour12: true,
-										})}
+										{doctor.firstName} {doctor.lastName}
 									</td>
 									<td
 										className={cn(
-											planIdx === 0 ? "" : "border-t border-gray-200",
+											doctorIdx === 0 ? "" : "border-t border-gray-200",
 											"hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell"
 										)}
 									>
-										{appointment.doctor}
+										{doctor.specialization}
 									</td>
 									<td
 										className={cn(
-											planIdx === 0 ? "" : "border-t border-gray-200",
+											doctorIdx === 0 ? "" : "border-t border-gray-200",
 											"hidden px-3 py-3.5 text-sm text-gray-500 lg:table-cell"
 										)}
 									>
-										{appointment.reason}
+										{doctor.experience}
 									</td>
 									<td
 										className={cn(
-											planIdx === 0 ? "" : "border-t border-gray-200",
+											doctorIdx === 0 ? "" : "border-t border-gray-200",
 											"px-3 py-3.5 text-sm text-gray-500"
 										)}
 									>
-										<div
-											className={cn("font-medium", {
-												"text-green-700": appointment.status === "Completed",
-												"text-yellow-700": appointment.status === "Pending",
+										<div className="font-medium">
+											{doctor.createdAt.toLocaleString("en-US", {
+												month: "short",
+												day: "numeric",
+												year: "numeric",
+												hour: "numeric",
+												minute: "2-digit",
+												hour12: true,
 											})}
-										>
-											{appointment.status}
 										</div>
 									</td>
 									<td
 										className={cn(
-											planIdx === 0 ? "" : "border-t border-transparent",
+											doctorIdx === 0 ? "" : "border-t border-transparent",
 											"relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
 										)}
 									>
@@ -195,11 +210,9 @@ export default function Appointments(): JSX.Element {
 											className="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
 										>
 											Select
-											<span className="sr-only">
-												, {appointment.appointmentNumber}
-											</span>
+											<span className="sr-only">, {doctor.specialization}</span>
 										</button>
-										{planIdx !== 0 ? (
+										{doctorIdx !== 0 ? (
 											<div className="absolute -top-px left-0 right-6 h-px bg-gray-200" />
 										) : null}
 									</td>

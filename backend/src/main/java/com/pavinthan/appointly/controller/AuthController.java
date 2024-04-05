@@ -1,9 +1,11 @@
 package com.pavinthan.appointly.controller;
 
 import com.pavinthan.appointly.dto.*;
+import com.pavinthan.appointly.exception.AppException;
 import com.pavinthan.appointly.security.UserAuthProvider;
 import com.pavinthan.appointly.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,12 @@ public class AuthController {
 
     @GetMapping("/user")
     public  ResponseEntity<UserDto> user(@AuthenticationPrincipal UserDto principal) {
-        return ResponseEntity.ok(principal);
+        UserDto user = userService.getUserById(principal.getId());
+
+        if(user == null) {
+            throw new AppException("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(user);
     }
 }
